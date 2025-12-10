@@ -1,0 +1,896 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Facebook-Marketing Preisrechner</title>
+  <style>
+    :root {
+      --primary: #1877f2;
+      --primary-dark: #1564d0;
+      --secondary: #42b72a;
+      --bg-main: #f0f2f5;
+      --bg-card: #ffffff;
+      --text-primary: #1c1e21;
+      --text-secondary: #65676b;
+      --border: #dfe1e5;
+      --border-light: #e4e6eb;
+      --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+      --success: #42b72a;
+      --danger: #dc3545;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    body {
+      margin: 0;
+      padding: 32px 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: var(--text-primary);
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 2px solid var(--border-light);
+    }
+    
+    h1 {
+      font-size: 32px;
+      margin: 0 0 12px;
+      color: var(--text-primary);
+      font-weight: 700;
+    }
+    
+    p.lead {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    
+    .card {
+      background: var(--bg-main);
+      padding: 24px;
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0 0 20px;
+      color: var(--primary);
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+    }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+    
+    input[type="number"], 
+    input[type="text"], 
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 2px solid var(--border);
+      border-radius: 8px;
+      font-size: 15px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background: white;
+      font-family: inherit;
+    }
+    
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.1);
+    }
+    
+    .input-group {
+      margin-bottom: 20px;
+    }
+    
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+    
+    .help-text {
+      color: var(--text-secondary);
+      font-size: 13px;
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    
+    .divider {
+      height: 1px;
+      background: var(--border-light);
+      margin: 20px 0;
+    }
+    
+    .summary-box {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      padding: 24px;
+      border-radius: 12px;
+      color: white;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-md);
+    }
+    
+    .summary-label {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+    }
+    
+    .summary-amount {
+      font-size: 36px;
+      font-weight: 700;
+      margin: 0;
+    }
+    
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex: 1;
+      min-width: 140px;
+    }
+    
+    button:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-sm);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: var(--primary-dark);
+    }
+    
+    .btn-secondary {
+      background: var(--bg-main);
+      color: var(--text-primary);
+      border: 2px solid var(--border);
+    }
+    
+    .btn-secondary:hover {
+      background: var(--border-light);
+    }
+    
+    .btn-success {
+      background: var(--success);
+      color: white;
+      min-width: auto;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+    
+    .btn-success:hover {
+      background: #36a420;
+    }
+    
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+      min-width: auto;
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+    
+    .btn-danger:hover {
+      background: #c82333;
+    }
+    
+    .custom-service-item {
+      background: white;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      border: 2px solid var(--border-light);
+    }
+    
+    .custom-service-header {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+    
+    .custom-service-header input {
+      flex: 1;
+    }
+    
+    .custom-service-header button {
+      flex: 0;
+    }
+    
+    .custom-services-container {
+      margin-top: 16px;
+    }
+    
+    .add-service-btn {
+      width: 100%;
+      margin-top: 12px;
+    }
+    
+    .service-description-box {
+      background: #f8f9fa;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 8px;
+      border: 1px solid var(--border-light);
+    }
+    
+    .service-description-box textarea {
+      font-size: 13px;
+      min-height: 60px;
+    }
+    
+    .invoice {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      border: 2px solid var(--border-light);
+      margin-top: 32px;
+    }
+    
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border-light);
+    }
+    
+    .invoice-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 0 0 8px;
+      color: var(--text-primary);
+    }
+    
+    .invoice-client {
+      color: var(--text-secondary);
+      font-size: 15px;
+    }
+    
+    .invoice-date {
+      text-align: right;
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 24px 0;
+    }
+    
+    thead {
+      background: var(--bg-main);
+    }
+    
+    th {
+      padding: 14px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--text-primary);
+      border-bottom: 2px solid var(--border);
+    }
+    
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    
+    .table-header-row {
+      background: var(--bg-main);
+    }
+    
+    .table-header-row th {
+      color: var(--primary);
+      font-size: 15px;
+      padding: 12px 14px;
+    }
+    
+    .text-right {
+      text-align: right;
+    }
+    
+    .font-bold {
+      font-weight: 700;
+    }
+    
+    .total-row {
+      background: var(--bg-main);
+      font-weight: 600;
+    }
+    
+    .service-description-row {
+      font-size: 12px;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+    
+    .invoice-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 24px;
+      padding-top: 24px;
+      border-top: 2px solid var(--border-light);
+    }
+    
+    .invoice-note {
+      max-width: 500px;
+      color: var(--text-secondary);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    
+    .invoice-total {
+      text-align: right;
+    }
+    
+    .invoice-subtotal {
+      font-size: 16px;
+      margin-bottom: 12px;
+      color: var(--text-secondary);
+    }
+    
+    .invoice-grand-total {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--primary);
+    }
+    
+    .service-description {
+      margin-top: 32px;
+      padding: 24px;
+      background: var(--bg-main);
+      border-radius: 8px;
+    }
+    
+    .service-description h3 {
+      margin: 0 0 16px;
+      font-size: 18px;
+      color: var(--text-primary);
+    }
+    
+    .service-description ul {
+      margin: 0;
+      padding-left: 24px;
+      line-height: 1.8;
+      color: var(--text-secondary);
+    }
+    
+    .warning-box {
+      background: #fff3cd;
+      border-left: 4px solid #ffc107;
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: #856404;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 24px;
+      }
+      
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .row {
+        grid-template-columns: 1fr;
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+      
+      button {
+        width: 100%;
+      }
+      
+      .invoice-header {
+        flex-direction: column;
+        gap: 16px;
+      }
+      
+      .invoice-date {
+        text-align: left;
+      }
+      
+      .invoice-footer {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+      }
+      
+      .invoice-total {
+        text-align: left;
+        width: 100%;
+      }
+      
+      .custom-service-header {
+        flex-direction: column;
+      }
+    }
+    
+    @media print {
+      body {
+        background: white;
+        padding: 0;
+      }
+      
+      .container {
+        box-shadow: none;
+        padding: 20px;
+      }
+      
+      .actions, .card, .summary-box, .btn-danger, .add-service-btn {
+        display: none !important;
+      }
+      
+      .invoice {
+        border: none;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Facebook-Marketing Preiskalkulator</h1>
+      <p class="lead">Professionelle Angebotserstellung mit flexiblen Leistungen und separater Aufschlüsselung von Arbeitsleistung und Facebook-Werbebudget</p>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2 class="card-title">Angebotsinformationen</h2>
+        
+        <div class="input-group">
+          <label>Angebotsname</label>
+          <input id="offerName" type="text" value="Facebook Marketing — Schneiderbetrieb" />
+        </div>
+
+        <div class="input-group">
+          <label>Kunde / Ort</label>
+          <input id="client" type="text" value="Kunde: Schneider in Augsburg" />
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="input-group">
+          <label>Einrichtungsgebühr (einmalig, €)</label>
+          <input id="setupFee" type="number" min="0" value="200" />
+          <div class="service-description-box">
+            <textarea id="setupFeeDescription" placeholder="Beschreibung der Einrichtungsleistung...">Inkl. Facebook-Seite einrichten, Zahlungsmethode verbinden, bis zu 2 Beiträge erstellen</textarea>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Anzahl Beiträge (gesamt)</label>
+          <input id="postCount" type="number" min="0" value="2" />
+          <div class="help-text">Die ersten 2 Beiträge sind in der Einrichtungsgebühr enthalten. Jeder weitere Beitrag: 50 €</div>
+        </div>
+
+        <div class="input-group">
+          <label>Moderation: Stunden (gesamt)</label>
+          <input id="moderationHoursTotal" type="number" min="0" step="0.25" value="0" />
+        </div>
+
+        <div class="input-group">
+          <label>Moderation: Stundensatz (€)</label>
+          <input id="moderationRate" type="number" min="0" value="38" />
+          <div class="service-description-box">
+            <textarea id="moderationDescription" placeholder="Beschreibung der Moderationsleistung...">Beantwortung von Kommentaren und Nachrichten, Community-Management</textarea>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <h3 style="font-size: 16px; color: var(--primary); margin-bottom: 16px;">Zusätzliche Leistungen</h3>
+        
+        <div id="customServicesContainer" class="custom-services-container">
+          <!-- Dynamische zusätzliche Leistungen werden hier eingefügt -->
+        </div>
+
+        <button class="btn-success add-service-btn" onclick="addCustomService()">+ Weitere Leistung hinzufügen</button>
+      </div>
+
+      <div class="card">
+        <h2 class="card-title">Werbekampagne (separate Kosten)</h2>
+        
+        <div class="row">
+          <div class="input-group">
+            <label>Budget pro Tag (€)</label>
+            <input id="adBudgetPerDay" type="number" min="0" value="10" />
+          </div>
+          <div class="input-group">
+            <label>Management-Gebühr (%)</label>
+            <input id="adManagementPercent" type="number" min="0" max="100" value="20" />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Anzahl Werbe-Tage</label>
+          <input id="adDays" type="number" min="0" value="3" />
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="input-group">
+          <label>Express-Zuschlag (einmalig, €)</label>
+          <input id="expressFee" type="number" min="0" value="0" />
+          <div class="service-description-box">
+            <textarea id="expressDescription" placeholder="Beschreibung des Express-Zuschlags...">Bevorzugte Bearbeitung innerhalb von 24-48 Stunden</textarea>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Sonstige Leistungen (€)</label>
+          <input id="extras" type="number" min="0" value="15" />
+          <div class="service-description-box">
+            <textarea id="extrasDescription" placeholder="Beschreibung der sonstigen Leistungen...">Fotos, Textkorrekturen, Grafikdesign</textarea>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Bankdaten-Einrichtung (einmalig, €)</label>
+          <input id="bankSetup" type="number" min="0" value="10" />
+          <div class="service-description-box">
+            <textarea id="bankSetupDescription" placeholder="Beschreibung der Bankdaten-Einrichtung...">Verbindung der Zahlungsmethode mit Facebook Business Manager</textarea>
+          </div>
+        </div>
+
+        <div class="warning-box">
+          <strong>Hinweis:</strong> Das Facebook-Werbebudget wird separat abgerechnet und nicht in den Haupt-Gesamtpreis einberechnet.
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-box">
+      <div class="summary-label">Arbeitsleistung (Hauptbetrag)</div>
+      <div id="subtotal" class="summary-amount">€ 0,00</div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="recalculate()">Berechnen</button>
+      <button class="btn-secondary" onclick="resetDefaults()">Zurücksetzen</button>
+      <button class="btn-secondary" onclick="printOffer()">Als PDF drucken</button>
+    </div>
+
+    <div class="invoice" id="invoiceArea">
+      <div class="invoice-header">
+        <div>
+          <div id="outOfferName" class="invoice-title">Facebook Marketing — Schneiderbetrieb</div>
+          <div id="outClient" class="invoice-client">Kunde: Schneider in Augsburg</div>
+        </div>
+        <div class="invoice-date">
+          Datum: <span id="date"></span>
+        </div>
+      </div>
+
+      <table id="itemsTable">
+        <thead>
+          <tr>
+            <th>Leistung</th>
+            <th class="text-right">Preis</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+
+      <div class="invoice-footer">
+        <div class="invoice-note">
+          Hinweis: Dieses Angebot zeigt die Arbeitsleistung separat vom Facebook-Werbebudget. Das Werbebudget wird direkt an Facebook gezahlt.
+        </div>
+        <div class="invoice-total">
+          <div class="invoice-subtotal">
+            Arbeitsleistung (Zwischensumme): <span id="outSubtotal">€ 0,00</span>
+          </div>
+          <div class="invoice-grand-total">
+            Gesamt: <span id="outTotal">€ 0,00</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-description">
+        <h3>Leistungsbeschreibung</h3>
+        <ul>
+          <li>Einrichtung der Facebook-Seite und Verbindung der Zahlungsmethode (einmalig, falls erforderlich)</li>
+          <li>Erstellung von Beiträgen (2 Beiträge inkl.; zusätzliche Beiträge 50 €/Stück)</li>
+          <li>Beantwortung von Kommentaren und Nachrichten (Moderation) – je nach gebuchten Stunden</li>
+          <li>Sponsoring: Das Werbebudget wird direkt an Facebook gezahlt; die Management-Gebühr wird separat ausgewiesen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let customServiceCounter = 0;
+    
+    function fmt(v) {
+      return '€ ' + v.toFixed(2).replace('.', ',');
+    }
+
+    function addCustomService() {
+      customServiceCounter++;
+      const container = document.getElementById('customServicesContainer');
+      
+      const serviceDiv = document.createElement('div');
+      serviceDiv.className = 'custom-service-item';
+      serviceDiv.id = 'customService' + customServiceCounter;
+      
+      serviceDiv.innerHTML = `
+        <div class="custom-service-header">
+          <div style="flex: 2;">
+            <label>Leistungsname</label>
+            <input type="text" id="customServiceName${customServiceCounter}" placeholder="z.B. Facebook-Seite Management" />
+          </div>
+          <div style="flex: 1;">
+            <label>Preis (€)</label>
+            <input type="number" id="customServicePrice${customServiceCounter}" min="0" value="0" />
+          </div>
+          <div style="flex: 0; padding-top: 28px;">
+            <button class="btn-danger" onclick="removeCustomService(${customServiceCounter})">Entfernen</button>
+          </div>
+        </div>
+        <div class="service-description-box">
+          <textarea id="customServiceDescription${customServiceCounter}" placeholder="Beschreibung dieser Leistung..."></textarea>
+        </div>
+      `;
+      
+      container.appendChild(serviceDiv);
+    }
+
+    function removeCustomService(id) {
+      const service = document.getElementById('customService' + id);
+      if (service) {
+        service.remove();
+      }
+      recalculate();
+    }
+
+    function recalculate() {
+      // Eingabewerte auslesen
+      const setup = Number(document.getElementById('setupFee').value) || 0;
+      const posts = Math.max(0, Number(document.getElementById('postCount').value) || 0);
+      const extraPostPrice = 50;
+      const billablePosts = Math.max(0, posts - 2);
+      const postsTotal = billablePosts * extraPostPrice;
+
+      const modHours = Number(document.getElementById('moderationHoursTotal').value) || 0;
+      const modRate = Number(document.getElementById('moderationRate').value) || 0;
+      const moderationTotal = modHours * modRate;
+
+      const express = Number(document.getElementById('expressFee').value) || 0;
+      const extras = Number(document.getElementById('extras').value) || 0;
+      const bank = Number(document.getElementById('bankSetup').value) || 0;
+
+      // Zusätzliche benutzerdefinierte Leistungen
+      let customServicesTotal = 0;
+      const customServices = [];
+      const container = document.getElementById('customServicesContainer');
+      const serviceItems = container.getElementsByClassName('custom-service-item');
+      
+      for (let item of serviceItems) {
+        const id = item.id.replace('customService', '');
+        const nameInput = document.getElementById('customServiceName' + id);
+        const priceInput = document.getElementById('customServicePrice' + id);
+        const descInput = document.getElementById('customServiceDescription' + id);
+        
+        if (nameInput && priceInput) {
+          const name = nameInput.value || 'Zusätzliche Leistung';
+          const price = Number(priceInput.value) || 0;
+          const description = descInput ? descInput.value : '';
+          
+          if (price > 0 || name !== 'Zusätzliche Leistung') {
+            customServices.push({ name, price, description });
+            customServicesTotal += price;
+          }
+        }
+      }
+
+      // Werbekosten (separat)
+      const adBudgetPerDay = Number(document.getElementById('adBudgetPerDay').value) || 0;
+      const adDays = Math.max(0, Number(document.getElementById('adDays').value) || 0);
+      const adManagementPercent = Number(document.getElementById('adManagementPercent').value) || 0;
+      const adsBudgetTotal = adBudgetPerDay * adDays;
+      const adsManagementDaily = adBudgetPerDay * (adManagementPercent / 100);
+      const adsManagementTotal = adsManagementDaily * adDays;
+
+      // Zwischensumme (nur eigene Leistungen)
+      const ownSubtotal = setup + postsTotal + moderationTotal + customServicesTotal + express + extras + bank;
+
+      // Anzeige aktualisieren
+      document.getElementById('subtotal').innerText = fmt(ownSubtotal);
+      document.getElementById('outSubtotal').innerText = fmt(ownSubtotal);
+      document.getElementById('outTotal').innerText = fmt(ownSubtotal);
+
+      // Rechnungstabelle füllen
+      const tbody = document.querySelector('#itemsTable tbody');
+      tbody.innerHTML = '';
+
+      function addRow(name, price, description = '') {
+        const tr = document.createElement('tr');
+        const td1 = document.createElement('td');
+        td1.innerText = name;
+        const td2 = document.createElement('td');
+        td2.className = 'text-right';
+        td2.innerText = fmt(price);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tbody.appendChild(tr);
+        
+        // Beschreibung hinzufügen, falls vorhanden
+        if (description && description.trim()) {
+          const descTr = document.createElement('tr');
+          descTr.className = 'service-description-row';
+          const descTd = document.createElement('td');
+          descTd.colSpan = 2;
+          descTd.innerText = '→ ' + description;
+          descTr.appendChild(descTd);
+          tbody.appendChild(descTr);
+        }
+      }
+
+      // Arbeitsleistung
+      const ownHeader = document.createElement('tr');
+      ownHeader.className = 'table-header-row';
+      ownHeader.innerHTML = '<th colspan="2">Arbeitsleistung</th>';
+      tbody.appendChild(ownHeader);
+
+      const setupDesc = document.getElementById('setupFeeDescription').value;
+      addRow('Einrichtung (einmalig)', setup, setupDesc);
+      
+      addRow('Inklusive Beiträge (2)', 0);
+      if (billablePosts > 0) addRow('Zusätzliche Beiträge (' + billablePosts + ')', postsTotal);
+      
+      const modDesc = document.getElementById('moderationDescription').value;
+      addRow('Moderation (' + modHours + ' h × ' + fmt(modRate).replace('€ ', '') + ' €/h)', moderationTotal, modDesc);
+      
+      // Zusätzliche benutzerdefinierte Leistungen
+      customServices.forEach(service => {
+        addRow(service.name, service.price, service.description);
+      });
+      
+      const expressDesc = document.getElementById('expressDescription').value;
+      if (express > 0) addRow('Express-Zuschlag', express, expressDesc);
+      
+      const extrasDesc = document.getElementById('extrasDescription').value;
+      if (extras > 0) addRow('Sonstige Leistungen', extras, extrasDesc);
+      
+      const bankDesc = document.getElementById('bankSetupDescription').value;
+      addRow('Bankdaten-Einrichtung', bank, bankDesc);
+
+      // Werbekosten (separat)
+      const advHeader = document.createElement('tr');
+      advHeader.className = 'table-header-row';
+      advHeader.innerHTML = '<th colspan="2">Facebook Werbung (separate Kosten)</th>';
+      tbody.appendChild(advHeader);
+
+      addRow('Werbebudget (Gesamt: ' + adDays + ' Tage)', adsBudgetTotal, 'Direkt an Facebook zu zahlen');
+      addRow('Werbe-Management (gesamt)', adsManagementTotal, adManagementPercent + '% vom täglichen Werbebudget');
+
+      // Summenzeilen
+      const sumRow = document.createElement('tr');
+      sumRow.className = 'total-row';
+      sumRow.innerHTML = '<td class="font-bold">Gesamt Arbeitsleistung</td><td class="text-right font-bold">' + fmt(ownSubtotal) + '</td>';
+      tbody.appendChild(sumRow);
+
+      const adsRow = document.createElement('tr');
+      adsRow.innerHTML = '<td style="font-size:13px;color:var(--text-secondary)">Hinweis: Facebook-Werbebudget (nicht inbegriffen)</td><td class="text-right" style="font-size:13px;color:var(--text-secondary)">' + fmt(adsBudgetTotal + adsManagementTotal) + '</td>';
+      tbody.appendChild(adsRow);
+
+      // Angebotskopf aktualisieren
+      document.getElementById('outOfferName').innerText = document.getElementById('offerName').value || 'Angebot';
+      document.getElementById('outClient').innerText = document.getElementById('client').value || '';
+      document.getElementById('date').innerText = new Date().toLocaleDateString('de-DE');
+    }
+
+    function resetDefaults() {
+      document.getElementById('offerName').value = 'Facebook Marketing — Schneiderbetrieb';
+      document.getElementById('client').value = 'Kunde: Schneider in Augsburg';
+      document.getElementById('setupFee').value = 200;
+      document.getElementById('setupFeeDescription').value = 'Inkl. Facebook-Seite einrichten, Zahlungsmethode verbinden, bis zu 2 Beiträge erstellen';
+      document.getElementById('postCount').value = 2;
+      document.getElementById('moderationHoursTotal').value = 0;
+      document.getElementById('moderationRate').value = 38;
+      document.getElementById('moderationDescription').value = 'Beantwortung von Kommentaren und Nachrichten, Community-Management';
+      document.getElementById('adBudgetPerDay').value = 10;
+      document.getElementById('adManagementPercent').value = 20;
+      document.getElementById('adDays').value = 3;
+      document.getElementById('expressFee').value = 0;
+      document.getElementById('expressDescription').value = 'Bevorzugte Bearbeitung innerhalb von 24-48 Stunden';
+      document.getElementById('extras').value = 15;
+      document.getElementById('extrasDescription').value = 'Fotos, Textkorrekturen, Grafikdesign';
+      document.getElementById('bankSetup').value = 10;
+      document.getElementById('bankSetupDescription').value = 'Verbindung der Zahlungsmethode mit Facebook Business Manager';
+      
+      // Alle benutzerdefinierten Leistungen entfernen
+      document.getElementById('customServicesContainer').innerHTML = '';
+      customServiceCounter = 0;
+      
+      recalculate();
+    }
+
+    function printOffer() {
+      recalculate();
+      const originalTitle = document.title;
+      document.title = document.getElementById('offerName').value || 'Angebot';
+      window.print();
+      document.title = originalTitle;
+    }
+
+    // Initialisierung
+    window.addEventListener('load', resetDefaults);
+  </script>
+</body>
+</html>
